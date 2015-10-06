@@ -167,7 +167,11 @@ var SongEntry = React.createClass({
   },
   render: function(){
     var songStructure = this.state.songs.map(function(song, i) {
-      return <Song data={song} key={i}/>
+      return (
+        <div>
+          <Song data={song} key={i}/>
+        </div>
+      )
     })
     var songResults = this.state.searchResults.map(function(song, i) {
       var songUri = song.songUrl
