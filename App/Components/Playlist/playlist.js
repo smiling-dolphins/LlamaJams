@@ -1,5 +1,5 @@
 var React = require('react');
-var SongEntry = require('./songEntry');
+var SongEntry = require('./SongEntry');
 
 //basic playlist skeleton for each page
 var Playlist = React.createClass({
