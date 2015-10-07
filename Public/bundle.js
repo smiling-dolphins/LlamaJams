@@ -28694,7 +28694,15 @@
 	  },
 	  handleDelete: function handleDelete(e) {
 	    e.preventDefault();
-	    alert("delete clicked!");
+	    var fbref = this.firebaseRef;
+
+	    fbref.once('value', function (snapshot) {
+	      snapshot.forEach(function (childSnapshot) {
+	        if (childSnapshot.val().songUrl === e.target.value) {
+	          fbref.child(childSnapshot.key()).remove();
+	        }
+	      });
+	    });
 	  },
 	  render: function render() {
 	    var self = this;
@@ -28821,7 +28829,7 @@
 	      ),
 	      React.createElement(
 	        'button',
-	        { onClick: this.props.onDelete },
+	        { value: this.props.data.songUrl, onClick: this.props.onDelete },
 	        'X'
 	      )
 	    );

@@ -167,7 +167,15 @@ var SongEntry = React.createClass({
   },
   handleDelete: function(e){
     e.preventDefault();
-    alert("delete clicked!");
+    var fbref = this.firebaseRef;
+
+    fbref.once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        if(childSnapshot.val().songUrl === e.target.value){
+          fbref.child(childSnapshot.key()).remove();
+        }
+      });
+    });
   },
   render: function(){
     var self = this;
