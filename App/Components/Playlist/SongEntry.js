@@ -165,9 +165,18 @@ var SongEntry = React.createClass({
       })
    }.bind(this));
   },
+  handleDelete: function(e){
+    e.preventDefault();
+    alert("delete clicked!");
+  },
   render: function(){
+    var self = this;
     var songStructure = this.state.songs.map(function(song, i) {
-      return <Song data={song} key={i}/>
+      return (
+        <div>
+          <Song data={song} key={i} onDelete={self.handleDelete} />
+        </div>
+      )
     })
     var songResults = this.state.searchResults.map(function(song, i) {
       var songUri = song.songUrl

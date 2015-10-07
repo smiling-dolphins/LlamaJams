@@ -34,7 +34,7 @@ var Playlist = React.createClass({
           </button>
         </div>
         <div className='bigger-container'>
-        //passes in all the child props to songEntry, the parent
+        {/* passes in all the child props to songEntry, the parent */}
           <SongEntry {...this.props}/>
         </div>
       </div>
