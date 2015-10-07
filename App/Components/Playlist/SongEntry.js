@@ -1,7 +1,6 @@
 var React = require('react');
 var Search = require('./Search');
 var Song = require('./Song');
-var DeleteBtn = require('./DeleteBtn');
 var Player = require('./Player');
 var Firebase = require('firebase');
 
@@ -175,12 +174,7 @@ var SongEntry = React.createClass({
     var songStructure = this.state.songs.map(function(song, i) {
       return (
         <div>
-          <div>
-            <Song data={song} key={i} />
-          </div>
-          <div className="delete-button">
-            <DeleteBtn onDelete={self.handleDelete} />
-          </div>
+          <Song data={song} key={i} onDelete={self.handleDelete} />
         </div>
       )
     })

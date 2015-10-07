@@ -28700,16 +28700,7 @@
 	      return React.createElement(
 	        'div',
 	        null,
-	        React.createElement(
-	          'div',
-	          null,
-	          React.createElement(Song, { data: song, key: i })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'delete-button' },
-	          React.createElement(DeleteBtn, { onDelete: self.handleDelete })
-	        )
+	        React.createElement(Song, { data: song, key: i, onDelete: self.handleDelete })
 	      );
 	    });
 	    var songResults = this.state.searchResults.map(function (song, i) {
@@ -28825,6 +28816,11 @@
 	        'div',
 	        { className: 'artist-view' },
 	        this.props.data.artist
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.props.onDelete },
+	        'X'
 	      )
 	    );
 	  }
