@@ -1,6 +1,6 @@
-/* need to download proximanova in the css folder to view proxima nova */
+/* replaced Proxima Nova with Google Fonts alternative */
 body {
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   letter-spacing: 0.2px;
   background-color: #d0c490;
   height: 100%;
@@ -44,9 +44,13 @@ body {
   padding-bottom: 5px;
 }
 
+.guestcode {
+  text-transform: none;
+}
+
 /*holds the entire div elements, which wraps all the elements that are at 100% width, to make it a consistent 70% width*/
 .bigger-container {
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   margin: 0 auto;
   width: 70%;
   position: relative;
@@ -57,7 +61,7 @@ body {
 }
 
 .guest-container {
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   padding-top: 17px;
 }
 
@@ -91,7 +95,7 @@ body {
 
 /* text of the lets jam button on the front page */
 .text-lets-jam {
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   text-transform: uppercase;
   padding: 20px 30px 20px 30px;
   color: white;
@@ -148,7 +152,7 @@ body {
   width: 330px;
   height: 29px;
   border-width: 0px;
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   width: 290px;
   height: 29px;
   border-width: 0px;
@@ -158,7 +162,7 @@ body {
 
 /* the front page input that holds the 'join a jam' */
 .input-host-jam {
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   background-color: #ff6c00;
   width: 330px;
   background-color: #ff6c00;
@@ -171,7 +175,7 @@ body {
 
 /* makes the placeholders centered and white instead of gray */
 ::-webkit-input-placeholder{
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   color: white;
   text-align: center;
   letter-spacing:2px;
@@ -195,7 +199,7 @@ body {
 
 /* styles the input bar */
 .searchbar input {
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   font-size: 13px;
   color: #fff;
   border-width: 0px;
@@ -223,7 +227,7 @@ body {
 /* created links for each item listed on soundcloud results to make them clickable */
 .song-results a {
   display: block;
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   font-size: 13px;
   color: #ccc;
   text-decoration: none;
@@ -234,7 +238,7 @@ body {
 
 /* song results on hover for the items that are listed on soundcloud searches in the search bar */
 .song-results a:hover {
-  font-family: 'Proxima Nova';
+  font-family: 'Lato', sans-serif;
   background-color: #383838;
   font-size: 13px;
   font-color: #666;

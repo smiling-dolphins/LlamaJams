@@ -140,7 +140,6 @@
 	});
 
 	React.render(React.createElement(Main, null), document.getElementById('app'));
-	'';
 
 /***/ },
 /* 1 */
@@ -20680,12 +20679,12 @@
 	Fireproof.bless(Promise);
 
 	// create reference to database
-	var ref = new Firebase('https://llamajamsauth.firebaseio.com/');
+	var ref = new Firebase('https://lldj.firebaseio.com/');
 	// 'promisable' reference
 	var fpRef = new Fireproof(ref);
 
 	// use database secret for token generator
-	var tokenGenerator = new FirebaseTokenGenerator('VgF8MXKNUfEnzygDAERDZdiLPUS86W4AGBHmEYM8');
+	var tokenGenerator = new FirebaseTokenGenerator('b8qI3z2xL8Lp1xaq3m3vNNWtpZz1iwBEtSRKXzRx');
 
 	module.exports = {
 
@@ -20712,7 +20711,7 @@
 	      playlistCode: playlistCode
 	    };
 
-	    var playlistRef = new Firebase("https://llamajamsauth.firebaseio.com/" + playlistCode);
+	    var playlistRef = new Firebase("https://lldj.firebaseio.com/" + playlistCode);
 
 	    // set the refactored data in database with playlistCode as item name
 	    playlistRef.set(refactored);
@@ -28495,7 +28494,11 @@
 	          'span',
 	          { className: 'guestcode-span' },
 	          'GuestCode: ',
-	          this.props.playlistCode
+	          React.createElement(
+	            'span',
+	            { className: 'guestcode' },
+	            this.props.playlistCode
+	          )
 	        ),
 	        React.createElement(
 	          'button',
@@ -28524,8 +28527,7 @@
 	var React = __webpack_require__(1);
 	var Search = __webpack_require__(170);
 	var Song = __webpack_require__(171);
-	var DeleteBtn = __webpack_require__(172);
-	var Player = __webpack_require__(173);
+	var Player = __webpack_require__(172);
 	var Firebase = __webpack_require__(162);
 
 	var SongEntry = React.createClass({
@@ -28534,7 +28536,7 @@
 	  // This function fetches the right playlist from Firebase based on
 	  // your playlist code.
 	  loadSongsFromServer: function loadSongsFromServer(receivedCode) {
-	    this.firebaseRef = new Firebase('https://llamajamsauth.firebaseio.com/' + receivedCode + '/playlist');
+	    this.firebaseRef = new Firebase('https://lldj.firebaseio.com/' + receivedCode + '/playlist');
 
 	    this.firebaseRef.on('child_added', (function (snapshot) {
 	      var eachSong = snapshot.val();
@@ -28673,7 +28675,7 @@
 	      this.setState({ searchResults: this.state.searchResults.slice(0) });
 	      this.forceUpdate();
 	    }
-	    SC.get('http://api.soundcloud.com/tracks/', { q: inputSearch, limit: 7 }, (function (tracks) {
+	    SC.get('https://api.soundcloud.com/tracks/', { q: inputSearch, limit: 7 }, (function (tracks) {
 	      // Display each song title and an option to add '+' to host playlist
 	      var obj = [];
 
@@ -28830,49 +28832,6 @@
 
 /***/ },
 /* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	{/* KS - make a input type=button here that onClick will call this.props.handleDelete method (not written yet) with param this.props.data.songUrl */}
-	var DeleteBtn = React.createClass({
-	    displayName: 'DeleteBtn',
-
-	    render: function render() {
-	        return React.createElement(
-	            'button',
-	            { onClick: this.props.onDelete },
-	            'X'
-	        );
-	    }
-	});
-
-	module.exports = DeleteBtn;
-
-	{/* Example of usage:
-	     var ParentComponent = React.createClass({ // this is SongEntry
-	         render: function(){
-	             return (
-	                 <ChildComponent onSomeEvent={this.handleThatEvent} />;
-	             )
-	         },
-	         handleThatEvent: function(e){
-	              //update state, etc.
-	         }
-	     });
-	      var ChildComponent = React.createClass({ // this is DeleteBtn
-	         render: function(){
-	             return (
-	                <input type="button" onClick={this.props.onSomeEvent} value="Click Me!" />
-	             )
-	         }
-	     });
-	    */}
-
-/***/ },
-/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
