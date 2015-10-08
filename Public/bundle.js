@@ -28832,6 +28832,11 @@
 	        'button',
 	        { value: this.props.data.songUrl, onClick: this.props.onDelete },
 	        'X'
+	      ),
+	      React.createElement(
+	        'h2',
+	        null,
+	        this.props.showAuth
 	      )
 	    );
 	  }
