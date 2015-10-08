@@ -126,6 +126,7 @@ var SongEntry = React.createClass({
     // If there's no current soundManager object, create one
     if(!window.soundManager){
       SC.stream(player.state.songs[0].songUrl, myOptions, function(song) {
+        console.log('song: ', song);
         song.play();
       })
     }else{
