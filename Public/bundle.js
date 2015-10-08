@@ -28653,6 +28653,7 @@
 	    // If there's no current soundManager object, create one
 	    if (!window.soundManager) {
 	      SC.stream(player.state.songs[0].songUrl, myOptions, function (song) {
+	        console.log('song: ', song);
 	        song.play();
 	      });
 	    } else {
@@ -28694,7 +28695,15 @@
 	  },
 	  handleDelete: function handleDelete(e) {
 	    e.preventDefault();
-	    alert("delete clicked!");
+	    var fbref = this.firebaseRef;
+
+	    fbref.once('value', function (snapshot) {
+	      snapshot.forEach(function (childSnapshot) {
+	        if (childSnapshot.val().songUrl === e.target.value) {
+	          fbref.child(childSnapshot.key()).remove();
+	        }
+	      });
+	    });
 	  },
 	  render: function render() {
 	    var self = this;
@@ -28821,7 +28830,7 @@
 	      ),
 	      React.createElement(
 	        'button',
-	        { onClick: this.props.onDelete },
+	        { value: this.props.data.songUrl, onClick: this.props.onDelete },
 	        'X'
 	      )
 	    );
