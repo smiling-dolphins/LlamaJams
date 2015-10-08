@@ -1,0 +1,255 @@
+/* replaced Proxima Nova with Google Fonts alternative */
+body {
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 0.2px;
+  background-color: #d0c490;
+  height: 100%;
+  color: #fff;
+}
+
+/* container is used to place the guestcode:NAME on the top right of the playlist page */
+.playlistcode-container {
+  padding-top: 3px;
+  float: right;
+  text-transform: uppercase;
+  font-size:11px;
+  font-weight:100;
+}
+
+/* log out button div properties */
+.logout-button {
+  background-color: #2d3137;
+  border: none;
+  color: white;
+  width: 95px;
+  height: 20px;
+  font-size: 9px;
+}
+
+/* specifically renders the guest playlist */
+.guest-box {
+  margin: 0 auto;
+  padding-top: 50px;
+  text-align: center;
+  height: 100px;
+  width: 100%;
+  margin-top: 70px;
+  margin-bottom: 25px;
+  background-color: transparent;
+}
+
+/* uses a span element to display the guest codes with padding */
+.guestcode-span {
+  display: block;
+  padding-bottom: 5px;
+}
+
+.guestcode {
+  text-transform: none;
+}
+
+/*holds the entire div elements, which wraps all the elements that are at 100% width, to make it a consistent 70% width*/
+.bigger-container {
+  font-family: 'Lato', sans-serif;
+  margin: 0 auto;
+  width: 70%;
+  position: relative;
+}
+
+.align-container {
+  text-align: center;
+}
+
+.guest-container {
+  font-family: 'Lato', sans-serif;
+  padding-top: 17px;
+}
+
+/* creates padding for the front page logo */
+.logo-container {
+  padding-top: 23px;
+}
+
+/* holds the play and pause buttons and .play-pause */
+.player-container {
+  width: 100%;
+  margin-bottom: 150px;
+  margin: 0 auto;
+}
+
+.padded-container {
+  padding-top:30px;
+}
+
+/* holds the play and pause buttons */
+.play-pause {
+  margin: 0 auto;
+  padding-top: 50px;
+  text-align: center;
+  height: 100px;
+  width: 100%;
+  margin-top: 70px;
+  margin-bottom: 25px;
+  background-color: transparent;
+}
+
+/* text of the lets jam button on the front page */
+.text-lets-jam {
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  padding: 20px 30px 20px 30px;
+  color: white;
+}
+
+/* lets jam button on the front page */
+.button-lets-jam {
+  background-color: #ff6c00;
+  width: 330px;
+  height: 48px;
+  font-size: 15px;
+  letter-spacing: 2px;
+  width: 290px;
+  height: 48px;
+  font-size: 15px;
+  letter-spacing: 3px;
+  border-width: 0px;
+}
+
+/* buttons have display inline-block to make it flow with the rest of the div elemeents*/
+.button-play {
+  display: inline-block;
+}
+
+.button-pause {
+  display: inline-block;
+}
+
+/* container playlist holds all the chosen songs */
+.container-playlist {
+  margin: 0 auto;
+  height: 80px;
+  width: 100%;
+  margin-top: 10px;
+  background-color: transparent;
+}
+
+/* changes the size of the songs for each song that is rendered onto the page */
+.song-view{
+  font-size: 17px;
+  font-weight:580;
+}
+
+/* changes the size of the artists for each artist that is rendered onto the page */
+.artist-view{
+  font-size: 15px;
+  font-weight:100;
+  padding-top: 4px;
+}
+
+/* the front page input that holds the guest code playlist name after 'lets jam' is clicked */
+.input-join-jam {
+  background-color: #f1b136;
+  width: 330px;
+  height: 29px;
+  border-width: 0px;
+  font-family: 'Lato', sans-serif;
+  width: 290px;
+  height: 29px;
+  border-width: 0px;
+  color:#fff;
+  padding: 5px 5px 5px 5px;
+}
+
+/* the front page input that holds the 'join a jam' */
+.input-host-jam {
+  font-family: 'Lato', sans-serif;
+  background-color: #ff6c00;
+  width: 330px;
+  background-color: #ff6c00;
+  width: 290px;
+  height: 29px;
+  border-width: 0px;
+  color:#fff;
+  padding: 5px 5px 5px 5px;
+}
+
+/* makes the placeholders centered and white instead of gray */
+::-webkit-input-placeholder{
+  font-family: 'Lato', sans-serif;
+  color: white;
+  text-align: center;
+  letter-spacing:2px;
+  text-transform: uppercase;
+  color: white;
+  text-align: center;
+}
+
+/* puts the input bar in a container to make it centered */
+.searchbar-container {
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 25px;
+}
+
+.searchbar {
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* styles the input bar */
+.searchbar input {
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  color: #fff;
+  border-width: 0px;
+  width: 100%;
+  height: 20px;
+  border-radius: 50px;
+  background-color: transparent;
+  border-color: #fff;
+  border-width: 1px;
+  border-style: solid;
+  padding: 6px 6px 6px 6px;
+}
+
+/* soundcloud results is the div element that is rendered underneath the search */
+.soundcloud-results {
+  display: none;
+  width: 100%;
+  position: absolute;
+  background-color: #242424;
+  top: 145px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+/* created links for each item listed on soundcloud results to make them clickable */
+.song-results a {
+  display: block;
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  color: #ccc;
+  text-decoration: none;
+  padding-left: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+/* song results on hover for the items that are listed on soundcloud searches in the search bar */
+.song-results a:hover {
+  font-family: 'Lato', sans-serif;
+  background-color: #383838;
+  font-size: 13px;
+  font-color: #666;
+  padding-left: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+/* is appeneded to each soundcloud result */
+.plus {
+  float: right;
+  padding-top: 2px;
+  padding-right: 10px;
+}
