@@ -1,0 +1,9 @@
+{
+  "firebase": "lldj",
+  "public": "Public",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
