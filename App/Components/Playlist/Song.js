@@ -13,7 +13,6 @@ var Song = React.createClass({
           {this.props.data.artist}
         </div>
         <button value={this.props.data.songUrl} onClick={this.props.onDelete}>X</button>
-        <h2>{this.props.showAuth}</h2>
       </div>
     )
   }

@@ -28546,12 +28546,20 @@
 	      var artist = eachTitle.slice(0, separateTitleandArtist);
 	      var song = eachTitle.slice(separateTitleandArtist + 2, eachTitle.length);
 	      // Pushes each song into the items array for rendering
-	      this.items.push({
-	        artist: artist,
-	        song: song,
-	        songUrl: eachSong.songUrl
-	      });
-	      this.setState({ songs: this.items });
+	      var found = false;
+	      for (var i = 0; i < this.items.length; i++) {
+	        if (this.items[i].songUrl === eachSong.songUrl) {
+	          found = true;
+	        }
+	      }
+	      if (!found) {
+	        this.items.push({
+	          artist: artist,
+	          song: song,
+	          songUrl: eachSong.songUrl
+	        });
+	        this.setState({ songs: this.items });
+	      }
 	    }).bind(this));
 	  },
 	  // This rerenders the playlist every time a song is removed from Firebase
@@ -28645,9 +28653,11 @@
 	        });
 	        fbref.child(children[0]).remove();
 	        // Play firstSong
-	        SC.stream(player.state.songs[0].songUrl, myOptions, function (song) {
-	          song.play();
-	        });
+	        if (player.state.songs[0]) {
+	          SC.stream(player.state.songs[0].songUrl, myOptions, function (song) {
+	            song.play();
+	          });
+	        }
 	      }
 	    };
 	    // If there's no current soundManager object, create one
@@ -28832,11 +28842,6 @@
 	        'button',
 	        { value: this.props.data.songUrl, onClick: this.props.onDelete },
 	        'X'
-	      ),
-	      React.createElement(
-	        'h2',
-	        null,
-	        this.props.showAuth
 	      )
 	    );
 	  }
