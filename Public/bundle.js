@@ -28831,17 +28831,17 @@
 	      React.createElement(
 	        'div',
 	        { className: 'song-view' },
-	        this.props.data.song
+	        this.props.data.song,
+	        React.createElement(
+	          'button',
+	          { className: 'delete-btn', value: this.props.data.songUrl, onClick: this.props.onDelete },
+	          'X'
+	        )
 	      ),
 	      React.createElement(
 	        'div',
 	        { className: 'artist-view' },
 	        this.props.data.artist
-	      ),
-	      React.createElement(
-	        'button',
-	        { value: this.props.data.songUrl, onClick: this.props.onDelete },
-	        'X'
 	      )
 	    );
 	  }

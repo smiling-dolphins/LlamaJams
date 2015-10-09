@@ -139,6 +139,21 @@ body {
   font-weight:580;
 }
 
+.delete-btn {
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  margin: 0px 10px;
+  vertical-align: top;
+  color: red;
+  font-weight: bold;
+}
+
+.delete-btn:hover {
+  color: white;
+  background-color: red;
+}
+
 /* changes the size of the artists for each artist that is rendered onto the page */
 .artist-view{
   font-size: 15px;

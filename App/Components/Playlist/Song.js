@@ -7,12 +7,12 @@ var Song = React.createClass({
       <div className='container-playlist'>
         <div className='song-view'>
           {this.props.data.song}
+          <button className='delete-btn' value={this.props.data.songUrl} onClick={this.props.onDelete}>X</button>
         </div>
         
         <div className='artist-view'>
           {this.props.data.artist}
         </div>
-        <button value={this.props.data.songUrl} onClick={this.props.onDelete}>X</button>
       </div>
     )
   }
