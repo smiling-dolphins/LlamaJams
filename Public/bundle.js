@@ -28662,7 +28662,7 @@
 	              });
 	            }
 	          }
-	          window.soundManager.stop();
+	          window.soundManager.pauseAll();
 	        }
 	      }
 	    };
@@ -28724,7 +28724,7 @@
 	  render: function render() {
 	    var self = this;
 	    var songStructure = this.state.songs.map(function (song, i) {
-	      return React.createElement(Song, { data: song, key: i, onDelete: self.handleDelete });
+	      return React.createElement(Song, { data: song, key: i, onDelete: self.handleDelete, ref: song.songUrl });
 	    });
 	    var songResults = this.state.searchResults.map(function (song, i) {
 	      var songUri = song.songUrl;

@@ -7,6 +7,9 @@ body {
   color: #fff;
 }
 
+.logo {
+  text-align: center;
+}
 /* container is used to place the guestcode:NAME on the top right of the playlist page */
 .playlistcode-container {
   padding-top: 3px;

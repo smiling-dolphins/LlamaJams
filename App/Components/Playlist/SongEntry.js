@@ -115,7 +115,7 @@ var SongEntry = React.createClass({
       onload : function() {
         var duration = this.duration;
       },
-      onfinish : function(){
+      onfinish : function() {
         // Delete first song from firebase
         var children = [];
         var oldUrl = this.url.slice(0, this.url.indexOf('/stream'));
@@ -135,7 +135,7 @@ var SongEntry = React.createClass({
               });  
             }
           }
-          window.soundManager.stop();
+          window.soundManager.pauseAll();
         }
       }
     }
@@ -198,7 +198,7 @@ var SongEntry = React.createClass({
     var self = this;
     var songStructure = this.state.songs.map(function(song, i) {
       return (
-        <Song data={song} key={i} onDelete={self.handleDelete} />
+        <Song data={song} key={i} onDelete={self.handleDelete} ref={song.songUrl} />
       )
     })
     var songResults = this.state.searchResults.map(function(song, i) {
