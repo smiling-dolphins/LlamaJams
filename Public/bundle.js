@@ -28541,8 +28541,17 @@
 	    this.firebaseRef.on('child_added', (function (snapshot) {
 	      var eachSong = snapshot.val();
 	      var eachTitle = eachSong.title;
-	      var artist = eachTitle.slice(0, eachTitle.indexOf('-'));
-	      var song = eachTitle.slice(eachTitle.indexOf('-') + 1, eachTitle.length);
+	      var song;
+	      var artist;
+	      // The next three lines attempt to parse the song title to store
+	      var separateTitleandArtist = eachTitle.indexOf('-');
+	      if (separateTitleandArtist === -1) {
+	        song = eachTitle.slice(0, eachTitle.length);
+	        artist = '';
+	      } else {
+	        artist = eachTitle.slice(0, separateTitleandArtist);
+	        song = eachTitle.slice(separateTitleandArtist + 2, eachTitle.length);
+	      }
 	      // Pushes each song into the items array for rendering
 	      var found = false;
 	      for (var i = 0; i < this.items.length; i++) {
