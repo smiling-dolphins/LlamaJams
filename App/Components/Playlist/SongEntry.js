@@ -27,6 +27,7 @@ var SongEntry = React.createClass({
       }
       if(!found){
         this.items.push({
+          key: this.items.length,
           artist: artist,
           song: song,
           songUrl: eachSong.songUrl
@@ -192,14 +193,12 @@ var SongEntry = React.createClass({
     var self = this;
     var songStructure = this.state.songs.map(function(song, i) {
       return (
-        <div>
-          <Song data={song} key={i} onDelete={self.handleDelete} />
-        </div>
+        <Song data={song} key={song.key} onDelete={self.handleDelete} />
       )
     })
     var songResults = this.state.searchResults.map(function(song, i) {
       var songUri = song.songUrl
-      return <a className='song-results' href='#' ref='eachSoundcloud' value={songUri}>{song.title}<div className='plus'>+</div></a>
+      return <a className='song-results' key={i} href='#' ref='eachSoundcloud' value={songUri}>{song.title}<div className='plus'>+</div></a>
     })
     if(this.state.active) {
       var display = {
@@ -224,7 +223,8 @@ var SongEntry = React.createClass({
     );
    },
   componentDidMount: function() {
-    if (this.props.playlistCode.length > 0) {
+    var jwt = window.localStorage.getItem('token');
+    if (this.props.playlistCode.length > 0 && !jwt) {
       this.loadSongsFromServer(this.props.playlistCode);
       this.rerenderPlaylist();
     }

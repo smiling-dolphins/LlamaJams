@@ -28554,6 +28554,7 @@
 	      }
 	      if (!found) {
 	        this.items.push({
+	          key: this.items.length,
 	          artist: artist,
 	          song: song,
 	          songUrl: eachSong.songUrl
@@ -28718,17 +28719,13 @@
 	  render: function render() {
 	    var self = this;
 	    var songStructure = this.state.songs.map(function (song, i) {
-	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(Song, { data: song, key: i, onDelete: self.handleDelete })
-	      );
+	      return React.createElement(Song, { data: song, key: song.key, onDelete: self.handleDelete });
 	    });
 	    var songResults = this.state.searchResults.map(function (song, i) {
 	      var songUri = song.songUrl;
 	      return React.createElement(
 	        'a',
-	        { className: 'song-results', href: '#', ref: 'eachSoundcloud', value: songUri },
+	        { className: 'song-results', key: i, href: '#', ref: 'eachSoundcloud', value: songUri },
 	        song.title,
 	        React.createElement(
 	          'div',
@@ -28764,7 +28761,8 @@
 	    );
 	  },
 	  componentDidMount: function componentDidMount() {
-	    if (this.props.playlistCode.length > 0) {
+	    var jwt = window.localStorage.getItem('token');
+	    if (this.props.playlistCode.length > 0 && !jwt) {
 	      this.loadSongsFromServer(this.props.playlistCode);
 	      this.rerenderPlaylist();
 	    }
@@ -28792,6 +28790,7 @@
 	    //it passes in the value to the parent songEntry so that they can use that search value
 	    //to scrape soundcloud API data
 	    this.props.checkClick(inputVal);
+	    React.findDOMNode(this.refs.input).value = '';
 	  },
 	  render: function render() {
 	    return React.createElement(
