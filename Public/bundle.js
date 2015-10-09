@@ -28541,10 +28541,17 @@
 	    this.firebaseRef.on('child_added', (function (snapshot) {
 	      var eachSong = snapshot.val();
 	      var eachTitle = eachSong.title;
+	      var song;
+	      var artist;
 	      // The next three lines attempt to parse the song title to store
 	      var separateTitleandArtist = eachTitle.indexOf('-');
-	      var artist = eachTitle.slice(0, separateTitleandArtist);
-	      var song = eachTitle.slice(separateTitleandArtist + 2, eachTitle.length);
+	      if (separateTitleandArtist === -1) {
+	        song = eachTitle.slice(0, eachTitle.length);
+	        artist = '';
+	      } else {
+	        artist = eachTitle.slice(0, separateTitleandArtist);
+	        song = eachTitle.slice(separateTitleandArtist + 2, eachTitle.length);
+	      }
 	      // Pushes each song into the items array for rendering
 	      var found = false;
 	      for (var i = 0; i < this.items.length; i++) {
@@ -28554,6 +28561,7 @@
 	      }
 	      if (!found) {
 	        this.items.push({
+	          key: this.items.length,
 	          artist: artist,
 	          song: song,
 	          songUrl: eachSong.songUrl
@@ -28646,17 +28654,24 @@
 	      onfinish: function onfinish() {
 	        // Delete first song from firebase
 	        var children = [];
+	        var oldUrl = this.url.slice(0, this.url.indexOf('/stream'));
 	        fbref.once('value', function (snapshot) {
 	          snapshot.forEach(function (childSnapshot) {
-	            children.push(childSnapshot.key().toString());
+	            //console.log('childSnap: ', childSnapshot.val());
+	            children.push(childSnapshot.val().songUrl);
 	          });
 	        });
-	        fbref.child(children[0]).remove();
+	        // fbref.child(children[0]).remove();
 	        // Play firstSong
-	        if (player.state.songs[0]) {
-	          SC.stream(player.state.songs[0].songUrl, myOptions, function (song) {
-	            song.play();
-	          });
+	        if (player.state.songs.length) {
+	          for (var i = 0; i < player.state.songs.length - 1; i++) {
+	            if (player.state.songs[i].songUrl === oldUrl && player.state.songs[i + 1]) {
+	              SC.stream(player.state.songs[i + 1].songUrl, myOptions, function (song) {
+	                song.play();
+	              });
+	            }
+	          }
+	          window.soundManager.stop();
 	        }
 	      }
 	    };
@@ -28718,17 +28733,13 @@
 	  render: function render() {
 	    var self = this;
 	    var songStructure = this.state.songs.map(function (song, i) {
-	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(Song, { data: song, key: i, onDelete: self.handleDelete })
-	      );
+	      return React.createElement(Song, { data: song, key: i, onDelete: self.handleDelete });
 	    });
 	    var songResults = this.state.searchResults.map(function (song, i) {
 	      var songUri = song.songUrl;
 	      return React.createElement(
 	        'a',
-	        { className: 'song-results', href: '#', ref: 'eachSoundcloud', value: songUri },
+	        { className: 'song-results', key: i, href: '#', ref: 'eachSoundcloud', value: songUri },
 	        song.title,
 	        React.createElement(
 	          'div',
@@ -28764,7 +28775,8 @@
 	    );
 	  },
 	  componentDidMount: function componentDidMount() {
-	    if (this.props.playlistCode.length > 0) {
+	    var jwt = window.localStorage.getItem('token');
+	    if (this.props.playlistCode.length > 0 && !jwt) {
 	      this.loadSongsFromServer(this.props.playlistCode);
 	      this.rerenderPlaylist();
 	    }
@@ -28792,6 +28804,7 @@
 	    //it passes in the value to the parent songEntry so that they can use that search value
 	    //to scrape soundcloud API data
 	    this.props.checkClick(inputVal);
+	    React.findDOMNode(this.refs.input).value = '';
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -28827,7 +28840,7 @@
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'container-playlist' },
+	      { className: 'container-playlist', key: this.props.data.key },
 	      React.createElement(
 	        'div',
 	        { className: 'song-view' },

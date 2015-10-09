@@ -9,6 +9,7 @@ var Search = React.createClass({
     //it passes in the value to the parent songEntry so that they can use that search value
     //to scrape soundcloud API data
     this.props.checkClick(inputVal)
+    React.findDOMNode(this.refs.input).value = '';
   },
   render: function() {
    return (
