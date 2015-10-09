@@ -4,7 +4,7 @@ var React = require('react');
 var Song = React.createClass({
   render: function() {
     return (
-      <div className='container-playlist'>
+      <div className='container-playlist' key={this.props.data.key}>
         <div className='song-view'>
           {this.props.data.song}
           <button className='delete-btn' value={this.props.data.songUrl} onClick={this.props.onDelete}>X</button>
