@@ -28541,10 +28541,8 @@
 	    this.firebaseRef.on('child_added', (function (snapshot) {
 	      var eachSong = snapshot.val();
 	      var eachTitle = eachSong.title;
-	      // The next three lines attempt to parse the song title to store
-	      var separateTitleandArtist = eachTitle.indexOf('-');
-	      var artist = eachTitle.slice(0, separateTitleandArtist);
-	      var song = eachTitle.slice(separateTitleandArtist + 2, eachTitle.length);
+	      var artist = eachTitle.slice(0, eachTitle.indexOf('-'));
+	      var song = eachTitle.slice(eachTitle.indexOf('-') + 1, eachTitle.length);
 	      // Pushes each song into the items array for rendering
 	      var found = false;
 	      for (var i = 0; i < this.items.length; i++) {
@@ -28647,17 +28645,24 @@
 	      onfinish: function onfinish() {
 	        // Delete first song from firebase
 	        var children = [];
+	        var oldUrl = this.url.slice(0, this.url.indexOf('/stream'));
 	        fbref.once('value', function (snapshot) {
 	          snapshot.forEach(function (childSnapshot) {
-	            children.push(childSnapshot.key().toString());
+	            //console.log('childSnap: ', childSnapshot.val());
+	            children.push(childSnapshot.val().songUrl);
 	          });
 	        });
-	        fbref.child(children[0]).remove();
+	        // fbref.child(children[0]).remove();
 	        // Play firstSong
-	        if (player.state.songs[0]) {
-	          SC.stream(player.state.songs[0].songUrl, myOptions, function (song) {
-	            song.play();
-	          });
+	        if (player.state.songs.length) {
+	          for (var i = 0; i < player.state.songs.length - 1; i++) {
+	            if (player.state.songs[i].songUrl === oldUrl && player.state.songs[i + 1]) {
+	              SC.stream(player.state.songs[i + 1].songUrl, myOptions, function (song) {
+	                song.play();
+	              });
+	            }
+	          }
+	          window.soundManager.stop();
 	        }
 	      }
 	    };
@@ -28719,7 +28724,7 @@
 	  render: function render() {
 	    var self = this;
 	    var songStructure = this.state.songs.map(function (song, i) {
-	      return React.createElement(Song, { data: song, key: song.key, onDelete: self.handleDelete });
+	      return React.createElement(Song, { data: song, key: i, onDelete: self.handleDelete });
 	    });
 	    var songResults = this.state.searchResults.map(function (song, i) {
 	      var songUri = song.songUrl;
@@ -28826,7 +28831,7 @@
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'container-playlist' },
+	      { className: 'container-playlist', key: this.props.data.key },
 	      React.createElement(
 	        'div',
 	        { className: 'song-view' },
