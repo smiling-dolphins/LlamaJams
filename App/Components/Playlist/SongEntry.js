@@ -135,7 +135,6 @@ var SongEntry = React.createClass({
               });  
             }
           }
-          window.soundManager.pauseAll();
         }
       }
     }

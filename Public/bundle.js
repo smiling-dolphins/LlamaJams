@@ -28662,7 +28662,6 @@
 	              });
 	            }
 	          }
-	          window.soundManager.pauseAll();
 	        }
 	      }
 	    };
