@@ -27,14 +27,14 @@ var Playlist = React.createClass({
       <div className='music-page'>
         <div className='playlistcode-container'>
           <span className='guestcode-span'>
-            GuestCode: {this.props.playlistCode}
+            GuestCode: <span className='guestcode'>{this.props.playlistCode}</span>
           </span>
           <button onClick={this.logout} className='logout-button'>
             LEAVE PLAYLIST
           </button>
         </div>
         <div className='bigger-container'>
-        //passes in all the child props to songEntry, the parent
+        {/* passes in all the child props to songEntry, the parent */}
           <SongEntry {...this.props}/>
         </div>
       </div>

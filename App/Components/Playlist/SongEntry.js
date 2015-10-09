@@ -9,7 +9,7 @@ var SongEntry = React.createClass({
   // This function fetches the right playlist from Firebase based on
   // your playlist code.
   loadSongsFromServer: function(receivedCode) {
-    this.firebaseRef = new Firebase('https://llamajamsauth.firebaseio.com/' + receivedCode + '/playlist');
+    this.firebaseRef = new Firebase('https://lldj.firebaseio.com/' + receivedCode + '/playlist');
 
     this.firebaseRef.on('child_added', function(snapshot) {
       var eachSong = snapshot.val()
@@ -19,12 +19,20 @@ var SongEntry = React.createClass({
       var artist = eachTitle.slice(0, separateTitleandArtist)
       var song = eachTitle.slice(separateTitleandArtist + 2, eachTitle.length)
       // Pushes each song into the items array for rendering
-      this.items.push({
-        artist: artist,
-        song: song,
-        songUrl: eachSong.songUrl
-      });
-      this.setState({songs: this.items})
+      var found = false;
+      for (var i = 0; i < this.items.length; i++){
+        if(this.items[i].songUrl === eachSong.songUrl){
+          found = true;
+        }
+      }
+      if(!found){
+        this.items.push({
+          artist: artist,
+          song: song,
+          songUrl: eachSong.songUrl
+        });
+        this.setState({songs: this.items});
+      }
     }.bind(this));
   },
   // This rerenders the playlist every time a song is removed from Firebase
@@ -118,14 +126,17 @@ var SongEntry = React.createClass({
         });
         fbref.child(children[0]).remove();
         // Play firstSong
-        SC.stream(player.state.songs[0].songUrl, myOptions, function(song) {
-          song.play();
-        });
+        if(player.state.songs[0]){
+          SC.stream(player.state.songs[0].songUrl, myOptions, function(song) {
+            song.play();
+          });
+        }
       }
     }
     // If there's no current soundManager object, create one
     if(!window.soundManager){
       SC.stream(player.state.songs[0].songUrl, myOptions, function(song) {
+        console.log('song: ', song);
         song.play();
       })
     }else{
@@ -148,7 +159,7 @@ var SongEntry = React.createClass({
       this.setState({ searchResults: this.state.searchResults.slice(0) })
       this.forceUpdate();
     } 
-    SC.get('http://api.soundcloud.com/tracks/', { q: inputSearch, limit: 7 }, function(tracks) {
+    SC.get('https://api.soundcloud.com/tracks/', { q: inputSearch, limit: 7 }, function(tracks) {
     // Display each song title and an option to add '+' to host playlist
       var obj = [];
 
@@ -165,9 +176,26 @@ var SongEntry = React.createClass({
       })
    }.bind(this));
   },
+  handleDelete: function(e){
+    e.preventDefault();
+    var fbref = this.firebaseRef;
+
+    fbref.once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        if(childSnapshot.val().songUrl === e.target.value){
+          fbref.child(childSnapshot.key()).remove();
+        }
+      });
+    });
+  },
   render: function(){
+    var self = this;
     var songStructure = this.state.songs.map(function(song, i) {
-      return <Song data={song} key={i}/>
+      return (
+        <div>
+          <Song data={song} key={i} onDelete={self.handleDelete} />
+        </div>
+      )
     })
     var songResults = this.state.searchResults.map(function(song, i) {
       var songUri = song.songUrl

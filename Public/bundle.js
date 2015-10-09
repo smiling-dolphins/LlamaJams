@@ -65,10 +65,11 @@
 	      backgroundColor: '#d0c490'
 	    };
 	  },
+
+	  // function to check which component (playlist or auth) should be rendered
 	  showInput: function showInput() {
 	    // retrieve token from local storage
 	    var jwt = window.localStorage.getItem('token');
-	    console.log("inside showInput:", this.state.playlistCode);
 	    // if token exists, take user to playlist
 	    if (jwt) {
 	      // change trigger state
@@ -78,7 +79,6 @@
 
 	      // authenticate token
 	      helpers.authHost(jwt).then(function (data) {
-	        console.log('AUTH SUCCESSFUL ON RETURN:', data);
 	        // save playlist code as state, to be transferred down to children component as property
 	        self.setState({ playlistCode: data.auth.playlistCode });
 	      })['catch'](function (err) {
@@ -93,7 +93,6 @@
 	        for (var code in snapshot.val()) {
 	          // if it matches the playlist code, render playlist view
 	          if (code === playlistCode) {
-	            console.log('inside else statement of showinput:', snapshot.val());
 	            self.setState({ check: false, showAuth: false, showPlaylist: true });
 	          }
 	        }
@@ -102,17 +101,14 @@
 	  },
 
 	  updateCode: function updateCode(newCode) {
-	    console.log('before stateChange:', newCode);
 	    // change playlist code and re-render main component
 	    this.setState({ playlistCode: newCode }, function () {
 	      this.showInput();
 	    });
-	    console.log('in updateCode:', this.state.playlistCode);
 	  },
 
 	  componentWillMount: function componentWillMount() {
 	    this.showInput();
-
 	    $('body').css('background-color', this.state.backgroundColor);
 	  },
 
@@ -144,7 +140,6 @@
 	});
 
 	React.render(React.createElement(Main, null), document.getElementById('app'));
-	'';
 
 /***/ },
 /* 1 */
@@ -20576,11 +20571,10 @@
 	    //if token exists, take user to playlist
 	    if (jwt) {
 	      //take to playlist
-	      console.log('We have TOKEN');
 	    } else {
-	      this.setState({ showButton: false });
-	      this.setState({ showInputBar: true });
-	    }
+	        this.setState({ showButton: false });
+	        this.setState({ showInputBar: true });
+	      }
 	  },
 
 	  render: function render() {
@@ -20685,32 +20679,30 @@
 	Fireproof.bless(Promise);
 
 	// create reference to database
-	var ref = new Firebase('https://llamajamsauth.firebaseio.com/');
+	var ref = new Firebase('https://lldj.firebaseio.com/');
 	// 'promisable' reference
 	var fpRef = new Fireproof(ref);
 
 	// use database secret for token generator
-	var tokenGenerator = new FirebaseTokenGenerator('VgF8MXKNUfEnzygDAERDZdiLPUS86W4AGBHmEYM8');
+	var tokenGenerator = new FirebaseTokenGenerator('b8qI3z2xL8Lp1xaq3m3vNNWtpZz1iwBEtSRKXzRx');
 
 	module.exports = {
 
-	  // OLD HOST
+	  // RETURNING HOST
 	  authHost: function authHost(token) {
-	    console.log('SUBMITTED HOST TOKEN:', token);
-	    // AUTHENTICATE WITH TOKEN
+	    // authenticate with token
 	    return fpRef.authWithCustomToken(token);
 	  },
 
 	  // NEW HOST
 	  createPlaylist: function createPlaylist(firstName) {
-	    // create PLAYLIST CODE
+	    // create playlist code
 	    var playlistCode = firstName + Math.floor(Math.random() * 100);
-	    console.log("PLAYLIST CODE CREATED:", playlistCode);
 
-	    // create TOKEN
-	    var token = tokenGenerator.createToken({ "uid": "asfass23j4io32e23in", "playlistCode": playlistCode, "isOwner": true });
-	    console.log('HOST TOKEN CREATED:', token);
+	    // create token with random uid string (not important, just need it to create a token)
+	    var token = tokenGenerator.createToken({ "uid": "asfass23j4io32e23in", "playlistCode": playlistCode });
 
+	    // store token
 	    window.localStorage.setItem('token', token);
 
 	    var refactored = {
@@ -20719,16 +20711,17 @@
 	      playlistCode: playlistCode
 	    };
 
-	    var playlistRef = new Firebase("https://llamajamsauth.firebaseio.com/" + playlistCode);
+	    var playlistRef = new Firebase("https://lldj.firebaseio.com/" + playlistCode);
 
-	    // set the refactored data in database
+	    // set the refactored data in database with playlistCode as item name
 	    playlistRef.set(refactored);
 
 	    return playlistCode;
 	  },
 
+	  // GUESTS
 	  checkCode: function checkCode() {
-	    console.log('inside checkcode:');
+	    // return a 'promisable' snaoshot of firebase data
 	    return fpRef.once('value');
 	  }
 	};
@@ -28442,7 +28435,6 @@
 	  submitHandler: function submitHandler(e) {
 	    e.preventDefault();
 	    var newCode = this.refs.playlistCode.getDOMNode().value;
-	    console.log('GUEST CODE:', newCode);
 	    this.props.updateCode(newCode);
 	  },
 	  render: function render() {
@@ -28469,20 +28461,24 @@
 	var React = __webpack_require__(1);
 	var SongEntry = __webpack_require__(169);
 
+	//basic playlist skeleton for each page
 	var Playlist = React.createClass({
 	  displayName: 'Playlist',
 
+	  //logout clears the local storage so that the user is able to redirect to the home and recreate the page
 	  logout: function logout() {
 	    localStorage.clear();
 	    location.reload();
 	  },
 
+	  //background color is a state so that it could be used for changing the css when it renders
 	  getInitialState: function getInitialState() {
 	    return {
 	      backgroundColor: '#34344d'
 	    };
 	  },
 
+	  //uses jQuery to set the background-color according to which page you're on
 	  componentWillMount: function componentWillMount() {
 	    $('body').css('background-color', this.state.backgroundColor);
 	  },
@@ -28498,7 +28494,11 @@
 	          'span',
 	          { className: 'guestcode-span' },
 	          'GuestCode: ',
-	          this.props.playlistCode
+	          React.createElement(
+	            'span',
+	            { className: 'guestcode' },
+	            this.props.playlistCode
+	          )
 	        ),
 	        React.createElement(
 	          'button',
@@ -28516,6 +28516,7 @@
 	});
 
 	module.exports = Playlist;
+	/* passes in all the child props to songEntry, the parent */
 
 /***/ },
 /* 169 */
@@ -28532,58 +28533,61 @@
 	var SongEntry = React.createClass({
 	  displayName: 'SongEntry',
 
+	  // This function fetches the right playlist from Firebase based on
+	  // your playlist code.
 	  loadSongsFromServer: function loadSongsFromServer(receivedCode) {
-
-	    this.firebaseRef = new Firebase('https://llamajamsauth.firebaseio.com/' + receivedCode + '/playlist');
-	    console.log(receivedCode);
-	    console.log("loading songs");
+	    this.firebaseRef = new Firebase('https://lldj.firebaseio.com/' + receivedCode + '/playlist');
 
 	    this.firebaseRef.on('child_added', (function (snapshot) {
-
 	      var eachSong = snapshot.val();
 	      var eachTitle = eachSong.title;
+	      // The next three lines attempt to parse the song title to store
 	      var separateTitleandArtist = eachTitle.indexOf('-');
-
 	      var artist = eachTitle.slice(0, separateTitleandArtist);
 	      var song = eachTitle.slice(separateTitleandArtist + 2, eachTitle.length);
-
-	      this.items.push({
-	        artist: artist,
-	        song: song,
-	        songUrl: eachSong.songUrl
-	      });
-
-	      this.setState({ songs: this.items });
+	      // Pushes each song into the items array for rendering
+	      var found = false;
+	      for (var i = 0; i < this.items.length; i++) {
+	        if (this.items[i].songUrl === eachSong.songUrl) {
+	          found = true;
+	        }
+	      }
+	      if (!found) {
+	        this.items.push({
+	          artist: artist,
+	          song: song,
+	          songUrl: eachSong.songUrl
+	        });
+	        this.setState({ songs: this.items });
+	      }
 	    }).bind(this));
 	  },
-
+	  // This rerenders the playlist every time a song is removed from Firebase
 	  rerenderPlaylist: function rerenderPlaylist() {
 	    this.firebaseRef.on('child_removed', (function (snapshot) {
-	      console.log('inside rerenderPlaylist:', snapshot.val());
 	      var removeSongbyUrl = snapshot.val().songUrl;
-
 	      var isFound = false;
+	      // Loops through the songs array and removes the deleted song
+	      // from firebase to control rendering for react
 	      for (var i = 0; i < this.state.songs.length; i++) {
 	        if (this.state.songs[i].songUrl === removeSongbyUrl && !isFound) {
 	          this.state.songs.splice(i, 1);
 	          isFound = true;
 	        }
 	      }
-
+	      // Resets the state to accurately reflect removed items
 	      this.setState({
 	        songs: this.state.songs
 	      });
-
 	      this.forceUpdate();
 	    }).bind(this));
 	  },
-
+	  // Sets the initial playlist code to an empty string
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      playlistCode: ''
 	    };
 	  },
-
 	  getInitialState: function getInitialState() {
 	    this.items = [];
 	    return {
@@ -28595,15 +28599,12 @@
 	      hasToken: false
 	    };
 	  },
-
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    this.state.hasToken = nextProps.hasToken;
-	    console.log('receiving props:', nextProps.playlistCode);
 	    var receivedCode = nextProps.playlistCode;
 	    this.loadSongsFromServer(receivedCode);
 	    this.rerenderPlaylist();
 	  },
-
 	  handleSearchInput: function handleSearchInput(inputSearch) {
 	    this.setState({
 	      input: inputSearch
@@ -28611,13 +28612,12 @@
 	    this.toggleBox();
 	    this.soundCloudCall(inputSearch);
 	  },
-
 	  toggleBox: function toggleBox() {
 	    this.setState({
 	      active: !this.state.active
 	    });
 	  },
-
+	  // This function adds songs to firebase
 	  pushSong: function pushSong(e) {
 	    var selectedSong = e.target.childNodes[0].data;
 	    var allResults = this.state.searchResults;
@@ -28630,11 +28630,10 @@
 	        });
 	      }
 	    }
-
 	    this.toggleBox();
 	    e.preventDefault();
 	  },
-
+	  // Controls the play and pause functionality of the music player
 	  playPause: function playPause() {
 	    var fbref = this.firebaseRef;
 	    var songs = this.state.songs;
@@ -28643,10 +28642,9 @@
 	    var myOptions = {
 	      onload: function onload() {
 	        var duration = this.duration;
-	        console.log('loaded');
 	      },
 	      onfinish: function onfinish() {
-	        //delete first song from firebase
+	        // Delete first song from firebase
 	        var children = [];
 	        fbref.once('value', function (snapshot) {
 	          snapshot.forEach(function (childSnapshot) {
@@ -28654,29 +28652,18 @@
 	          });
 	        });
 	        fbref.child(children[0]).remove();
-	        //shift the top song off the playlist array
-
-	        // play firstSong
-	        SC.stream(player.state.songs[0].songUrl, myOptions, function (song) {
-	          song.play();
-	        });
-	      },
-	      onresume: function onresume() {
-	        console.log("resumed");
-	      },
-	      onstop: function onstop() {
-	        console.log("Stopped");
-	      },
-	      onpause: function onpause() {
-	        console.log('Paused');
-	      },
-	      whileplaying: function whileplaying() {
-	        console.log(this.position);
+	        // Play firstSong
+	        if (player.state.songs[0]) {
+	          SC.stream(player.state.songs[0].songUrl, myOptions, function (song) {
+	            song.play();
+	          });
+	        }
 	      }
 	    };
-
+	    // If there's no current soundManager object, create one
 	    if (!window.soundManager) {
 	      SC.stream(player.state.songs[0].songUrl, myOptions, function (song) {
+	        console.log('song: ', song);
 	        song.play();
 	      });
 	    } else {
@@ -28685,51 +28672,58 @@
 	          toggle: false
 	        });
 	        window.soundManager.resumeAll();
-	        console.log('in resumeAll');
 	      } else {
 	        this.setState({
 	          toggle: true
 	        });
 	        window.soundManager.pauseAll();
-	        console.log('paudAll');
 	      }
 	    }
 	  },
-
+	  // Controls the searching and displaying of results from the SoundCloud API
 	  soundCloudCall: function soundCloudCall(inputSearch) {
 	    if (this.state.searchResults.length > 0) {
 	      this.setState({ searchResults: this.state.searchResults.slice(0) });
 	      this.forceUpdate();
 	    }
-
-	    SC.get('http://api.soundcloud.com/tracks/', { q: inputSearch, limit: 7 }, (function (tracks) {
+	    SC.get('https://api.soundcloud.com/tracks/', { q: inputSearch, limit: 7 }, (function (tracks) {
 	      // Display each song title and an option to add '+' to host playlist
 	      var obj = [];
 
 	      for (var i = 0; i < tracks.length; i++) {
 	        var eachSong = tracks[i].title;
 	        var eachUrl = tracks[i].uri;
-
 	        obj.push({
 	          title: eachSong,
 	          songUrl: eachUrl
 	        });
-
-	        console.log(obj);
 	      }
-
 	      this.setState({
 	        searchResults: obj
 	      });
 	    }).bind(this));
 	  },
+	  handleDelete: function handleDelete(e) {
+	    e.preventDefault();
+	    var fbref = this.firebaseRef;
 
-	  render: function render() {
-	    console.log('rendered:', this.props.playlistCode);
-	    var songStructure = this.state.songs.map(function (song, i) {
-	      return React.createElement(Song, { data: song, key: i });
+	    fbref.once('value', function (snapshot) {
+	      snapshot.forEach(function (childSnapshot) {
+	        if (childSnapshot.val().songUrl === e.target.value) {
+	          fbref.child(childSnapshot.key()).remove();
+	        }
+	      });
 	    });
-
+	  },
+	  render: function render() {
+	    var self = this;
+	    var songStructure = this.state.songs.map(function (song, i) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(Song, { data: song, key: i, onDelete: self.handleDelete })
+	      );
+	    });
 	    var songResults = this.state.searchResults.map(function (song, i) {
 	      var songUri = song.songUrl;
 	      return React.createElement(
@@ -28743,7 +28737,6 @@
 	        )
 	      );
 	    });
-
 	    if (this.state.active) {
 	      var display = {
 	        display: 'block'
@@ -28753,7 +28746,6 @@
 	        display: 'none'
 	      };
 	    }
-
 	    return React.createElement(
 	      'div',
 	      null,
@@ -28771,14 +28763,12 @@
 	      songStructure
 	    );
 	  },
-
 	  componentDidMount: function componentDidMount() {
 	    if (this.props.playlistCode.length > 0) {
 	      this.loadSongsFromServer(this.props.playlistCode);
 	      this.rerenderPlaylist();
 	    }
 	  }
-
 	});
 
 	module.exports = SongEntry;
@@ -28796,7 +28786,11 @@
 
 	  handleSubmit: function handleSubmit(e) {
 	    e.preventDefault();
+	    //references to 'input' to find the value of what is being passed into input
 	    var inputVal = React.findDOMNode(this.refs.input).value;
+	    //on submit, it sends the prop 'checkClick' with the input value being passed in
+	    //it passes in the value to the parent songEntry so that they can use that search value
+	    //to scrape soundcloud API data
 	    this.props.checkClick(inputVal);
 	  },
 	  render: function render() {
@@ -28826,6 +28820,7 @@
 
 	var React = __webpack_require__(1);
 
+	//the purpose of Song is to render our songs in a uniform way, songEntry uses this structure to render
 	var Song = React.createClass({
 	  displayName: 'Song',
 
@@ -28836,7 +28831,12 @@
 	      React.createElement(
 	        'div',
 	        { className: 'song-view' },
-	        this.props.data.song
+	        this.props.data.song,
+	        React.createElement(
+	          'button',
+	          { className: 'delete-btn', value: this.props.data.songUrl, onClick: this.props.onDelete },
+	          'X'
+	        )
 	      ),
 	      React.createElement(
 	        'div',
@@ -28860,20 +28860,28 @@
 	var Player = React.createClass({
 	  displayName: 'Player',
 
+	  //the play and pause have booleans as their values to toggle display and hide
 	  getInitialState: function getInitialState() {
 	    return {
 	      play: true,
 	      pause: false
 	    };
 	  },
+
+	  //when playShouldpause is invoked, the play should turn into a pause button
+	  //the pause should turn into a play button
 	  playShouldpause: function playShouldpause() {
 	    this.setState({
 	      play: !this.state.play,
 	      pause: !this.state.pause
 	    });
+	    //calls the parent songEntry with the props 'togglePlayer'
+	    //passes in the current state as an argument
 	    this.props.togglePlayer(this.state.play);
 	  },
 	  render: function render() {
+	    //these are used to create style properties for the images
+	    //this.state.play means that the play button should show, and the pause button should hide
 	    if (this.state.play) {
 	      var displayPlay = {
 	        display: 'block'
@@ -28881,14 +28889,16 @@
 	      var displayPause = {
 	        display: 'none'
 	      };
-	    } else {
-	      var displayPlay = {
-	        display: 'none'
-	      };
-	      var displayPause = {
-	        display: 'block'
-	      };
 	    }
+	    //else is used for when pause is currently at display, so that it could show the pause and hide the play
+	    else {
+	        var displayPlay = {
+	          display: 'none'
+	        };
+	        var displayPause = {
+	          display: 'block'
+	        };
+	      }
 
 	    return React.createElement(
 	      'div',

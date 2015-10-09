@@ -137,21 +137,22 @@ body {
 .song-view{
   font-size: 17px;
   font-weight:580;
+  padding-left: 40px;
 }
 
 .delete-btn {
-  background-color: white;
+  background-color: gray;
+  color: white;
   border: none;
   border-radius: 50%;
   margin: 0px 10px;
   vertical-align: top;
-  color: red;
   font-weight: bold;
 }
 
 .delete-btn:hover {
-  color: white;
   background-color: red;
+  color: white;
 }
 
 /* changes the size of the artists for each artist that is rendered onto the page */
